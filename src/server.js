@@ -1,5 +1,4 @@
 const http = require('http');
-const url = require('url');
 const query = require('querystring');
 const htmlHandler = require('./htmlResponses.js');
 const jsonHandler = require('./jsonResponses.js');
@@ -21,7 +20,8 @@ const handleGet = (request, response, parsedUrl) => {
 };
 
 const onRequest = (request, response) => {
-  const parsedUrl = url.parse(request.url);
+  const protocol = request.connection.encrypted ? 'https' : 'http';
+  const parsedUrl = new URL(request.url, `${protocol}://${request.headers.host}`);
 
 
 };
