@@ -5,13 +5,17 @@
 const users = {};
 
 const respondJSON = (request, response, status, object) => {
-  response.writeHead(status, { 'Content-Type': 'application/json' });
-  response.write(JSON.stringify(object));
-  response.end();
-};
+  const content = JSON.stringify(object);
 
-const respondJSONMeta = (request, response, status) => {
-  response.writeHead(status, { 'Content-Type': 'application/json' });
+  response.writeHead(status, { 
+    'Content-Type': 'application/json', 
+    'Content-Length': Buffer.byteLength(content, 'utf8'),
+  });
+
+  if(request.method !== 'HEAD') {
+    response.write(JSON.stringify(object));
+  }
+
   response.end();
 };
 
